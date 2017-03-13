@@ -1,6 +1,9 @@
 # openjklauncher
 Launcher for OpenJk
 
+<b>NOTE:This is a work in progress expect bugs!</b>
+
+
 This is a launcher an installer for OpenJK(Open source modification of Star Wars Jedi Academy)
 Currently only supports Linux 64 bit
 
