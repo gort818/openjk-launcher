@@ -1,0 +1,116 @@
+GtkButton:hover {
+    background-image: none;
+    background-color: transparent;
+    transition: 400ms linear;
+    border-right-color: #91a8d0;
+    border-left-color: #91a8d0;
+    border-top-color: #91a8d0;
+    border-bottom-color: #91a8d0;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #333 inset;
+}   
+
+GtkButton {
+   background-image: none;
+   background-color: transparent;
+   
+   font-size: 10px;
+   color: white;
+}
+
+
+
+
+GtkLabel {
+    
+    font-size: 10px;
+    color: white;
+}
+
+GtkComboBoxText{
+background-image: none;
+background-color: transparent;
+border-color: transparent;
+color:black
+   
+}
+GtkComboBoxText:active{
+background-image: none;
+background-color: transparent;
+border-color: transparent;
+
+   
+}
+
+GtkMessageDialog{
+background-color: 	#696969;
+}
+
+
+
+
+button:hover {
+    background-image: none;
+    background-color: transparent;
+    transition: 400ms linear;
+    border-right-color: #91a8d0;
+    border-left-color: #91a8d0;
+    border-top-color: #91a8d0;
+    border-bottom-color: #91a8d0;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #333 inset;
+}   
+
+button{
+   background-image: none;
+   background-color: transparent;
+   
+   font-size: 11px;
+   color: white;
+}
+
+
+
+
+label {
+    
+    font-size: 11px;
+    color: white;
+}
+
+comboboxtext{
+	background-image: none;
+	background-color: transparent;
+	border-color: transparent;
+	color:black
+   
+}
+combotextbox:active{
+	background-image: none;
+	background-color: transparent;
+	border-color: transparent;
+
+   
+}
+
+messagedialog {
+	background-color: 	#696969;
+	color:black
+}
+messagedialog button {
+	background-image: none;
+   	background-color: transparent;
+   
+   font-size: 11px;
+   color: white;
+}
+dialog label{
+color:black
+}
+dialog button{
+background-color: 	#696969;
+color:black
+
+}
+
+
