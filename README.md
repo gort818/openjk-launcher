@@ -3,6 +3,8 @@ Launcher for OpenJk
 
 <b>NOTE:This is a work in progress expect bugs!</b>
 
+<b>Dependencies python2.7, python-pygame, python-requests, gtk-3.0</b>
+
 
 This is a launcher an installer for OpenJK(Open source modification of Star Wars Jedi Academy)
 Currently only supports Linux 64 bit
@@ -30,7 +32,15 @@ Grab the .deb file from the releases page.
 
 
 
-Dependencies python2.7, python-pygame, python-requests- gtk-3.0
+
+
+
+TODO:
+1. Iron out bugs
+2. Make pacakges for other distros
+3. Add support for 32 bit executables ( Anyone still running 32 bit?)
+4. Make a package for windows and osx(This is a maybe, to be honest not really intetested)
+5. Rewrite the program in Vala ( for fun)
 
 ![Alt text](http://i.imgur.com/N1Zgzx1.png)
 
