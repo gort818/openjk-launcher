@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Openjk
+Comment=Openjk- Jedi Academy game Launcher
+Exec=openjk
+Icon=/usr/share/openjk/resources/OpenJK_Icon_1024.png
+Path=
+Terminal=false
+Type=Application
+Categories=Game;
+
