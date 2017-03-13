@@ -15,10 +15,13 @@ If you are using Steam follow this instructions:
   
   
 Installation Instructions:
+
 Distro Independent:
+
 Download the source, extract and run sudo python setup.py install
 
 Deb file:
+
 Grab the .deb file from the releases page.
 
 
