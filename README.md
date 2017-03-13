@@ -11,8 +11,16 @@ If you are using Steam follow this instructions:
   1.  Download and Install SteamCMD SteamCMD
   2. Set the download path using steamCMD, force_install_dir
   3. Using SteamCMD Set the platform to windows to download any windows game on steam. @sSteamCmdForcePlatformType "windows"
-  4. Using SteamCMD download the game, app_update 6020.
- 
+  4. Using SteamCMD download the game, app_update 6020
+  
+  
+Installation Instructions:
+Distro Independent:
+Download the source, extract and run sudo python setup.py install
+
+Deb file:
+Grab the .deb file from the releases page.
+
 
 
 
