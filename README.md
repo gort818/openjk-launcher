@@ -30,10 +30,13 @@ If you are using Steam follow this instructions:
       After Installing OpenJk you can now click either singleplayer or multiplayer.
       
   3. Options
-      Resolution can be changed to your native resolution.(More options coming at a later date)
-      Fullscreen can be turned on or off
-      Borderless window can be turned on or off
-      Mods can be set when you launch the game (Only ja++ is supported right now)
+      Resolution can be changed to your native resolution.(More options coming at a later date).
+      
+      Fullscreen can be turned on or off.
+      
+      Borderless window can be turned on or off.
+      
+      Mods can be set when you launch the game (Only ja++ is supported right now).
       
   
   
