@@ -23,10 +23,13 @@ If you are using Steam follow this instructions:
   Before you begin make sure to install Jedi Academy.
   
   1. Installation of OpenJk
+  
       Before you can play you must install Openjk you do this by opening the program and click install in the top left corner
+      
       and select the location where you have Jedi Academy installed and the program will download the latest binary.
       
   2. Launching the Game
+  
       After Installing OpenJk you can now click either singleplayer or multiplayer.
       
   3. Options
