@@ -17,9 +17,31 @@ If you are using Steam follow this instructions:
   2. Set the download path using steamCMD, force_install_dir
   3. Using SteamCMD Set the platform to windows to download any windows game on steam. @sSteamCmdForcePlatformType "windows"
   4. Using SteamCMD download the game, app_update 6020
+  5. Check for updates
+  
+<b>Usage Instructions:</b>
+  Before you begin make sure to install Jedi Academy.
+  
+  1. Installation of OpenJk
+      Before you can play you must install Openjk you do this by opening the program and click install in the top left corner
+      and select the location where you have Jedi Academy installed and the program will download the latest binary.
+      
+  2. Launching the Game
+      After Installing OpenJk you can now click either singleplayer or multiplayer.
+      
+  3. Options
+      Resolution can be changed to your native resolution.(More options coming at a later date)
+      Fullscreen can be turned on or off
+      Borderless window can be turned on or off
+      Mods can be set when you launch the game (Only ja++ is supported right now)
+      
   
   
-Installation Instructions:
+  
+  
+  
+  
+<b>Installation Instructions:</b>
 
 Distro Independent:
 
