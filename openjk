@@ -104,21 +104,23 @@ def check_settings(self):
         self.modlist.insert_text(2, 'MBII')
 
     if os.path.isfile(configfile):
-        if 'seta r_fullscreen "1"' in open(configfile).read():
+	fd = open(configfile)
+	fbuf = fd.read()
+        if 'seta r_fullscreen "1"' in fbuf:
             print "Fullscreen is on"
             self.checkbutton.set_active(True)
         else:
             print "Fullscreen is off"
             self.checkbutton.set_active(False)
             # Check for borderless window
-        if 'seta r_noborder "1"' in open(configfile).read():
+        if 'seta r_noborder "1"' in fbuf:
             print "Bordless window is on"
             self.checkbutton2.set_active(True)
         else:
             print "Bordless window is off"
             self.checkbutton2.set_active(False)
             # check for native resolution
-        if 'seta r_mode "-2"' in open(configfile).read():
+        if 'seta r_mode "-2"' in fbuf:
             print "Resolution is set to native"
             self.comboboxtext.set_active(0)
         else:
@@ -127,14 +129,16 @@ def check_settings(self):
 
             # check for mods
 
-        if '#mod "1"' in open(configfile).read():
+        if '#mod "1"' in fbuf:
             print "Mod is set to Ja++"
             self.modlist.set_active(1)
             exe = gamedir + '/openjk.x86_64 +set fs_game japlus'
-        if '#mod "0"' in open(configfile).read():
+        if '#mod "0"' in fbuf:
             print "Mod is not set"
             self.modlist.set_active(0)
             exe = gamedir + '/openjk.x86_64'
+
+	fd.close()
 
 
 ##################### Install script ###################
