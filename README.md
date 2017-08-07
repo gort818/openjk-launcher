@@ -4,7 +4,11 @@ Launcher for OpenJk
 <b>NOTE:This is a work in progress expect bugs!</b>
 
 <b>Dependencies python2.7, python-pygame, python-requests, gtk-3.0</b>
-<b> Looking for artists to help with the background and button images, please let me know if you are interested.<b>
+
+
+<b> Looking for artists to help with the background and button images, please let me know if you are interested.</b>
+
+
 
 
 This is a launcher an installer for OpenJK(Open source modification of Star Wars Jedi Academy)
