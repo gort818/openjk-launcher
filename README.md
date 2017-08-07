@@ -54,13 +54,14 @@ If you are using Steam follow this instructions:
   
 <b>Installation Instructions:</b>
 
-Distro Independent:
+  Distro Independent:
 
-Download the source, extract and run sudo python setup.py install
+  Download the source, extract and run sudo python setup.py install
 
-Deb file:
+  Deb file for Debian based systems
 
-Grab the .deb file from the releases page.
+  Grab the .deb file from the releases page.
+  https://github.com/gort818/openjklauncher/releases
 
 
 
