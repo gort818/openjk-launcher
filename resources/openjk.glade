@@ -220,7 +220,7 @@
     <property name="can_focus">False</property>
     <property name="type_hint">dialog</property>
     <property name="transient_for">window</property>
-    <property name ="title">Please select the folder where Jedi Academy base is installed</property>
+    <property name ="title">Please select the folder where Jedi Academy base is installed </property>
     <property name="action">select-folder</property>
     <property name="do_overwrite_confirmation">True</property>
     <child internal-child="vbox">
