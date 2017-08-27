@@ -1,25 +1,24 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+from os import system
+from distutils.dir_util import copy_tree
+from subprocess import call
 import os
 import sys
 import gi
 import pygame
 import fileinput
 import re
-import urllib2
+import urllib.request
+import urllib.error
+import urllib.parse
 import tarfile
 import shutil
-import glob
 import requests
-import ConfigParser
-
+import configparser
 gi.require_version('Gtk', '3.0')
-
-from gi.repository import Gtk, Gdk, GObject, GLib
-from os import system
-from sys import platform
-from distutils.dir_util import copy_tree
+from gi.repository import Gtk, Gdk
 
 # Check operating system
 if sys.platform.startswith('linux'):
@@ -33,10 +32,10 @@ if sys.platform.startswith('linux'):
     path = configdir + '/ojkl.cfg'
     resourcedir = '/usr/share/openjk/resources'
     exe = gamedir + '/openjk.x86_64'
-    print 'Running on Linux'
+    print('Running on Linux')
 cancel = 0
 
-##TODO add support for Windows and OSX
+# TODO add support for Windows and OSX
 
 
 # Load the css file for glade
@@ -58,140 +57,12 @@ adapter = requests.adapters.HTTPAdapter(max_retries=2)
 sess.mount('http://', adapter)
 
 
-# Check where jedi academy base is installed
-
-
-
-
-# check directory
-def check_directory():
-    if not os.path.isdir(configdir):
-        os.makedirs(configdir)
-
-
-# Create Config file
-def create_file():
-    if not os.path.isfile(configfile):
-        file = open(configfile, 'w+')
-        file.write('#mod "0"\n')
-        file.write('seta r_mode "4"\n')
-        file.write('seta r_fullscreen "0"\n')
-        file.write('seta r_noborder "0"\n')
-        file.close
-    shutil.copy(configfile, configdir + '/autoexec_sp.cfg')
-
-
-def create_openjk_config(path):
-    config = ConfigParser.ConfigParser()
-    config.add_section("Path")
-    config.set("Path", "folder", "null")
-
-    with open(path, "wb") as config_file:
-        config.write(config_file)
-
-
-def check_settings(self):
-    # Check for fullscreen
-    global gamedir
-    config = ConfigParser.ConfigParser()
-    config.read(path)
-    gamedir = config.get("Path", "Folder")
-    print ("Game dir is : " + gamedir)
-    if os.path.isdir(gamedir + '/japlus'):
-        self.modlist.insert_text(1, 'Ja ++')
-
-    if os.path.isdir(gamedir + '/MBII'):
-        self.modlist.insert_text(2, 'MBII')
-
-    if os.path.isfile(configfile):
-	fd = open(configfile)
-	fbuf = fd.read()
-	fd.close()
-        if 'seta r_fullscreen "1"' in fbuf:
-            print "Fullscreen is on"
-            self.checkbutton.set_active(True)
-        else:
-            print "Fullscreen is off"
-            self.checkbutton.set_active(False)
-            # Check for borderless window
-        if 'seta r_noborder "1"' in fbuf:
-            print "Bordless window is on"
-            self.checkbutton2.set_active(True)
-        else:
-            print "Bordless window is off"
-            self.checkbutton2.set_active(False)
-            # check for native resolution
-        if 'seta r_mode "-2"' in fbuf:
-            print "Resolution is set to native"
-            self.comboboxtext.set_active(0)
-        else:
-            print "Resolution is not set to native"
-            self.comboboxtext.set_active(1)
-
-            # check for mods
-
-        if '#mod "1"' in fbuf:
-            print "Mod is set to Ja++"
-            self.modlist.set_active(1)
-            exe = gamedir + '/openjk.x86_64 +set fs_game japlus'
-        if '#mod "0"' in fbuf:
-            print "Mod is not set"
-            self.modlist.set_active(0)
-            exe = gamedir + '/openjk.x86_64'
-
-
-##################### Install script ###################
-
-
-
-
-
-def install(self):
-    cancel = 0
-    sound_start = pygame.mixer.Sound(resourcedir + '/click.WAV')
-    sound_start.play()
-    # global gamedir
-    #self.window.hide()
-    #self.folder.show()
-    response = self.folder.run()
-    if cancel == 1:
-        return
-
-##################### End of Install script ###################
-
-
-
-
-def test(self):
-    while Gtk.events_pending():
-        Gtk.main_iteration()
-
-
-def check_internet(self):
-    try:
-        response = urllib2.urlopen('https://google.com', timeout=2)
-        print 'you are connected'
-        return True
-    except urllib2.URLError, err:
-        print err
-        print 'you are disconnected'
-        self.errordialog.show()
-        self.messagedialog.hide()
-
-
-# print 'Your game directory is: ' + gamedir
-print 'Your config directory is : ' + configdir
-
-
-# Setting up the windows and widgets
-
 class launcher:
     def __init__(self):
 
         self.builder = Gtk.Builder()
 
-        self.builder.add_from_file(resourcedir+'/openjk.glade'
-                                   )
+        self.builder.add_from_file(resourcedir+'/openjk.glade')
 
         self.builder.connect_signals(self)
 
@@ -210,6 +81,7 @@ class launcher:
         self.errordialog = self.builder.get_object('errordialog')
         self.ok = self.builder.get_object('ok')
         self.ok3 = self.builder.get_object('ok3')
+        self.progress = self.builder.get_object('progress')
         self.install_label = self.builder.get_object('install_label')
         self.checkbutton = self.builder.get_object('checkbutton')
         self.checkbutton2 = self.builder.get_object('checkbutton2')
@@ -221,6 +93,7 @@ class launcher:
         self.folder = self.builder.get_object("folder")
         self.ok_folder = self.builder.get_object("ok_folder")
         self.cancel_folder = self.builder.get_object("cancel_folder")
+
         check_directory()
         create_file()
         if not os.path.exists(path):
@@ -228,21 +101,20 @@ class launcher:
         check_settings(self)
 
     def on_ok_folder_clicked(self, widget):
-
+        self.progress.set_fraction(.05)
         print("Open clicked")
         global gamedir
         gamedir = (self.folder.get_filename())
-        config = ConfigParser.ConfigParser()
+        config = configparser.ConfigParser()
         config.read(path)
         config.set("Path", "folder", gamedir)
-        with open(path, "wb") as config_file:
+        with open(path, "w") as config_file:
             config.write(config_file)
-        print("Gamedir is now set to" + gamedir)
+        print(("Gamedir is now set to" + gamedir))
         self.folder.hide()
         while Gtk.events_pending():
             Gtk.main_iteration()
         print(gamedir)
-
 
         def show_message():
             self.ok.set_visible(False)
@@ -252,6 +124,7 @@ class launcher:
         self.messagedialog.show()
         # self.ok.set_opacity(.25)
         self.ok.set_visible(False)
+        self.progress.set_fraction(.25)
         while Gtk.events_pending():
             Gtk.main_iteration()
         self.messagedialog.show()
@@ -261,44 +134,47 @@ class launcher:
         while Gtk.events_pending():
             Gtk.main_iteration()
 
-        if check_internet(self) == True:
-            show_message
+        if check_internet(self) is False:
+            return
 
         Gtk.main_iteration()
         site = 'https://builds.openjk.org/'
         hdr = {
-            'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11\
+            (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
+            'Accept': 'text/html,application/xhtml+xml,\
+             application/xml;q=0.9,*/*;q=0.8',
             'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.3',
             'Accept-Encoding': 'none',
             'Accept-Language': 'en-US,en;q=0.8',
             'Connection': 'keep-alive',
         }
 
-        req = urllib2.Request(site, headers=hdr)
+        req = urllib.request.Request(site, headers=hdr)
         Gtk.main_iteration()
         try:
-            page = urllib2.urlopen(req)
-        except urllib2.HTTPError, e:
+            page = urllib.request.urlopen(req)
+        except urllib.error.HTTPError as e:
             self.errordialog.show()
             while Gtk.events_pending():
                 Gtk.main_iteration()
-            print e.fp.read()
+            print(e.fp.read())
 
         Gtk.main_iteration()
         content = page.read()
         Gtk.main_iteration()
-        file = open('/tmp/tmp.html', 'w')
+        file = open('/tmp/tmp.html', 'wb')
         file.write(content)
         file.close()
-        print 'Checking openjk Builds for newest version'
+        print('Checking openjk Builds for newest version')
         file = open('/tmp/tmp.html', 'r')
         lines = file.read()
         answer = re.findall(r'openjk[^<>]*?linux-64.tar.gz', lines)[-1]
-        print answer
+        print(answer)
         base_url = 'https://builds.openjk.org/'
         file = base_url + answer
-        print file
+        print(file)
+        self.progress.set_fraction(.50)
         Gtk.main_iteration()
         self.ok.set_visible(False)
         self.ok.set_sensitive(False)
@@ -314,56 +190,48 @@ class launcher:
         self.install_label.set_text('Please Wait...')
         while Gtk.events_pending():
             Gtk.main_iteration()
-        print 'Downloading file now'
+        print('Downloading file now')
         for i in range(1):
             try:
-                print ('Downloading %s' % answer)
+                print(('Downloading %s' % answer))
 
                 r = sess.get(file, stream=True, verify=False,
                              allow_redirects=True)
-                total_length = r.headers.get('content-length')
-                dl = 0
-                total_length = int(total_length)
                 with open('/tmp/' + answer, 'wb') as f:
 
                     for chunk in r.iter_content(chunk_size=1024):
                         if chunk:
-                            dl += len(chunk)
                             f.write(chunk)
-                            print total_length
-                            done = int(50 * dl / total_length)
-                            sys.stdout.write('\r[%s%s]' % ('=' * done,
-                                                           ' ' * (50 - done)))
-                            sys.stdout.flush()
-            except requests.exceptions.RequestException, e:
-                print e
-                sys.exit(1)
 
+            except requests.exceptions.RequestException as e:
+                print(e)
+                sys.exit(1)
+        self.progress.set_fraction(.75)
         # Gtk.main_iteration()
-        print 'File finished downloading'
-        print 'Extracting tarball'
+        print('File finished downloading')
+        print('Extracting tarball')
 
         tar = tarfile.open('/tmp/' + answer)
         tar.extractall('/tmp/')
         tar.close()
-        print 'Installing files'
+        print('Installing files')
         root_src_dir = tmpdir + '/install/JediAcademy/'
         root_dst_dir = gamedir
 
         copy_tree(root_src_dir, root_dst_dir)
-        print 'Cleaning up....'
-        print 'Done.\n'
+        print('Cleaning up....')
+        print('Done.\n')
         os.remove(tmpdir + '/' + answer)
         os.remove(tmpdir + '/tmp.html')
         shutil.rmtree(tmpdir + '/install')
-        self.messagedialog.show()
+        # self.messagedialog.show()
+        self.progress.set_fraction(1)
         self.install_label.set_text('Done, Please press ok')
         self.ok.set_opacity(1)
         self.ok.set_visible(True)
         self.ok.set_sensitive(True)
 
         self.folder.hide()
-
 
     def on_cancel_folder_clicked(self, widget):
         self.folder.hide()
@@ -372,6 +240,8 @@ class launcher:
         return cancel
 
     def on_ok_clicked(self, widget):
+        self.install_label.set_text('Please Wait...')
+        self.ok.set_visible(False)
         self.messagedialog.hide()
 
     def on_multi_enter_notify_event(self, widget, hover):
@@ -398,7 +268,11 @@ class launcher:
         sound_start = pygame.mixer.Sound(resourcedir + '/click.WAV')
         sound_start.play()
         self.window.destroy()
-        system(gamedir + "/openjk_sp.x86_64 +fs_game 'Openjk'")
+        print(gamedir)
+        exe = gamedir + '/openjk_sp.x86_64 +fs_game OpenJk'
+        print(exe)
+        # p=subprocess.Popen([exe])
+        call(exe, shell=True)
 
     def on_multi_clicked(self, widget):
         sound_start = pygame.mixer.Sound(resourcedir + '/click.WAV')
@@ -406,13 +280,14 @@ class launcher:
         sound_open = pygame.mixer.Sound(resourcedir + '/start.WAV')
         sound_open.play()
         if '#mod "1"' in open(configfile).read():
+
             exe = gamedir + '/openjk.x86_64 +set fs_game japlus'
         elif '#mod "0"' in open(configfile).read():
             exe = gamedir + '/openjk.x86_64'
         else:
             exe = gamedir + '/openjk.x86_64'
         self.window.destroy()
-        system(exe)
+        call(exe, shell=True)
 
     def on_back_clicked(self, widget):
         sound_start = pygame.mixer.Sound(resourcedir + '/back.WAV')
@@ -425,8 +300,7 @@ class launcher:
         sound_start.play()
         self.window.hide()
         self.window2.show_all()
-        self.window2.connect('delete-event', lambda w, e: w.hide() \
-                                                          or True)
+        self.window2.connect('delete-event', lambda w, e: w.hide() or True)
 
     def on_exit_clicked(self, widget):
         sound_start = pygame.mixer.Sound(resourcedir + '/click.WAV')
@@ -437,7 +311,6 @@ class launcher:
     def on_comboboxtext_changed(self, widget):
         sound_start = pygame.mixer.Sound(resourcedir + '/click.WAV')
         sound_start.play()
-        model = widget.get_model()
         active = widget.get_active()
         if active == 0:
             for line in fileinput.FileInput(configfile, inplace=True):
@@ -450,7 +323,7 @@ class launcher:
     def on_checkbutton_toggled(self, widget):
         sound_start = pygame.mixer.Sound(resourcedir + '/click.WAV')
         sound_start.play()
-        if self.checkbutton.get_active() == True:
+        if self.checkbutton.get_active() is True:
             for line in fileinput.FileInput(configfile, inplace=True):
                 if line.strip().startswith('seta r_fullscreen "'):
                     line = 'seta r_fullscreen "1"\n'
@@ -467,7 +340,7 @@ class launcher:
     def on_checkbutton2_toggled(self, widget):
         sound_start = pygame.mixer.Sound(resourcedir + '/click.WAV')
         sound_start.play()
-        if self.checkbutton2.get_active() == True:
+        if self.checkbutton2.get_active() is True:
             for line in fileinput.FileInput(configfile, inplace=True):
                 if line.strip().startswith('seta r_noborder "'):
                     line = 'seta r_noborder "1"\n'
@@ -484,7 +357,7 @@ class launcher:
     def on_modlist_changed(self, widget):
         sound_start = pygame.mixer.Sound(resourcedir + '/click.WAV')
         sound_start.play()
-        model = widget.get_model()
+        # model = widget.get_model()
         active = widget.get_active()
         if active == 0:
             for line in fileinput.FileInput(configfile, inplace=True):
@@ -505,11 +378,128 @@ class launcher:
     def on_install_clicked(self, widget):
         install(self)
 
-    def on_ok_clicked(self, widget):
-        self.messagedialog.hide()
-
     def on_ok2_clicked(self, widget):
         self.errordialog.hide()
+
+
+# check directory
+def check_directory():
+    if not os.path.isdir(configdir):
+        os.makedirs(configdir)
+
+
+# Create Config file
+def create_file():
+    if not os.path.isfile(configfile):
+        file = open(configfile, 'w+')
+        file.write('#mod "0"\n')
+        file.write('seta r_mode "4"\n')
+        file.write('seta r_fullscreen "0"\n')
+        file.write('seta r_noborder "0"\n')
+        file.close
+    shutil.copy(configfile, configdir + '/autoexec_sp.cfg')
+
+
+def create_openjk_config(path):
+    if not os.path.isfile(path):
+        config_file = open(path, 'w+')
+    config = configparser.ConfigParser()
+    config.add_section("Path")
+    config.set("Path", "folder", "null")
+
+    with open(path, "r+") as config_file:
+        config.write(config_file)
+
+
+def check_settings(self):
+    # Check for fullscreen
+    global gamedir
+    config = configparser.ConfigParser()
+    config.read(path)
+    gamedir = config.get("Path", "Folder")
+    print(("Game dir is : " + gamedir))
+    if os.path.isdir(gamedir + '/japlus'):
+        self.modlist.insert_text(1, 'Ja ++')
+
+    if os.path.isdir(gamedir + '/MBII'):
+        self.modlist.insert_text(2, 'MBII')
+
+    if os.path.isfile(configfile):
+        fd = open(configfile)
+        fbuf = fd.read()
+        fd.close()
+    if 'seta r_fullscreen "1"' in fbuf:
+        print("Fullscreen is on")
+        self.checkbutton.set_active(True)
+    else:
+        print("Fullscreen is off")
+        self.checkbutton.set_active(False)
+        # Check for borderless window
+    if 'seta r_noborder "1"' in fbuf:
+        print("Bordless window is on")
+        self.checkbutton2.set_active(True)
+    else:
+        print("Bordless window is off")
+        self.checkbutton2.set_active(False)
+        # check for native resolution
+    if 'seta r_mode "-2"' in fbuf:
+        print("Resolution is set to native")
+        self.comboboxtext.set_active(0)
+    else:
+        print("Resolution is not set to native")
+        self.comboboxtext.set_active(1)
+
+        # check for mods
+
+    if '#mod "1"' in fbuf:
+        print("Mod is set to Ja++")
+        self.modlist.set_active(1)
+    elif '#mod "0"' in fbuf:
+        print("Mod is not set")
+        self.modlist.set_active(0)
+
+
+# Install script #
+
+
+def install(self):
+    cancel = 0
+    sound_start = pygame.mixer.Sound(resourcedir + '/click.WAV')
+    sound_start.play()
+    # global gamedir
+    # self.window.hide()
+    # self.folder.show()
+    self.folder.run()
+    if cancel == 1:
+        return
+
+
+# End of Install script #
+
+
+def test(self):
+    while Gtk.events_pending():
+        Gtk.main_iteration()
+
+
+def check_internet(self):
+    try:
+        urllib.request.urlopen('https://google.com', timeout=2)
+        print('you are connected')
+        return True
+    except urllib.error.URLError as err:
+        print(err)
+        print('you are disconnected')
+        self.errordialog.show()
+        self.messagedialog.hide()
+        return False
+
+
+# print 'Your game directory is: ' + gamedir
+print('Your config directory is : ' + configdir)
+
+
+# Setting up the windows and widgets
 
 
 def main():
@@ -525,12 +515,10 @@ button:hover {
     border-bottom-color: #91a8d0;
     border-radius: 10px;
     box-shadow: 0 0 10px #333 inset;
-}   
-
+}
 window button{
    background-image: none;
    background-color: transparent;
-   
    font-size: 11px;
    color: white;
 }
@@ -539,36 +527,31 @@ window button{
 
 
 label {
-    
     font-size: 11px;
     color: white;
 }
 
 comboboxtext{
-	background-image: none;
-	background-color: transparent;
-	border-color: transparent;
-	color:black
-   
+    background-image: none;
+    background-color: transparent;
+    border-color: transparent;
+    color:black
 }
 combotextbox:active{
-	background-image: none;
-	background-color: transparent;
-	border-color: transparent;
-
-   
+    background-image: none;
+    background-color: transparent;
+    border-color: transparent;
 }
 
 messagedialog {
-	background-color: 	#696969;
-	color:black
+    background-color: 	#696969;
+    color:black
 }
 messagedialog button {
-	background-image: none;
-   	background-color: transparent;
-   
-   font-size: 11px;
-   color: white;
+    background-image: none;
+    background-color: transparent;
+    font-size: 11px;
+    color: white;
 }
 dialog label{
 color:black
@@ -578,16 +561,16 @@ background-color: 	#696969;
 color:black
 
 }
-	"""
+"""
         # Load the css file for glade
         cssProvider = Gtk.CssProvider()
-        cssProvider.load_from_path(resourcedir+"/style.css")
+        cssProvider.load_from_path(resourcedir + "/style.css")
         screen = Gdk.Screen.get_default()
         styleContext = Gtk.StyleContext()
         styleContext.add_provider_for_screen(screen, cssProvider,
                                              Gtk.STYLE_PROVIDER_PRIORITY_USER)
 
-    app = launcher()
+    launcher()
     gtk_style()
     sound_launch = pygame.mixer.Sound(resourcedir + '/open.WAV')
     sound_launch.play()
