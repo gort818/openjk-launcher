@@ -157,13 +157,15 @@
         </child>
       </object>
     </child>
-    <child>
+    <child type="titlebar">
       <placeholder/>
     </child>
   </object>
   <object class="GtkMessageDialog" id="errordialog">
     <property name="can_focus">False</property>
     <property name="modal">True</property>
+    <property name="default_width">200</property>
+    <property name="default_height">150</property>
     <property name="hide_titlebar_when_maximized">True</property>
     <property name="type_hint">dialog</property>
     <property name="transient_for">window</property>
@@ -202,7 +204,9 @@
           <object class="GtkLabel" id="label4">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">An error occured  :(</property>
+            <property name="label" translatable="yes">An error occured  :(
+
+No internet detected.</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -218,9 +222,9 @@
   </object>
   <object class="GtkFileChooserDialog" id="folder">
     <property name="can_focus">False</property>
+    <property name="title">Please select the folder where Jedi Academy base is installed </property>
     <property name="type_hint">dialog</property>
     <property name="transient_for">window</property>
-    <property name ="title">Please select the folder where Jedi Academy base is installed </property>
     <property name="action">select-folder</property>
     <property name="do_overwrite_confirmation">True</property>
     <child internal-child="vbox">
@@ -330,7 +334,24 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">2</property>
+            <property name="padding">5</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkProgressBar" id="progress">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">60</property>
+            <property name="margin_right">60</property>
+            <property name="margin_top">11</property>
+            <property name="margin_bottom">13</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="padding">4</property>
+            <property name="position">3</property>
           </packing>
         </child>
       </object>
