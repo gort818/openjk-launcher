@@ -5,6 +5,16 @@ Launcher for OpenJk
 
 <b>Dependencies python3, python3-pygame, python3-requests, gtk-3.0</b>
 
+<b> For users who are still running python2 you need pip3 installed.<b>
+    
+    1. pip3 install pygame
+    2. pip3 install requests
+    
+<b> For users running python3 </b>
+
+    1. pip install pygame
+    2. pip install requests
+
 
 <b> Looking for artists to help with the background and button images, please let me know if you are interested.</b>
 
