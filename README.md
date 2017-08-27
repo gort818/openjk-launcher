@@ -3,7 +3,7 @@ Launcher for OpenJk
 
 <b>NOTE:This is a work in progress expect bugs!</b>
 
-<b>Dependencies python2.7, python-pygame, python-requests, gtk-3.0</b>
+<b>Dependencies python3, python3-pygame, python3-requests, gtk-3.0</b>
 
 
 <b> Looking for artists to help with the background and button images, please let me know if you are interested.</b>
@@ -74,7 +74,7 @@ TODO:
   3. Add support for 32 bit executables ( Anyone still running 32 bit?)
   4. Make a package for windows and osx(This is a maybe, to be honest not really intetested)
   5. Rewrite the program in Vala ( for fun)
-  6. Make program compatible with Python 3
+  6. ~~Make program compatible with Python 3~~
 
 ![Alt text](http://i.imgur.com/N1Zgzx1.png)
 
