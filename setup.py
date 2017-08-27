@@ -14,7 +14,7 @@ data_files = [ ("/usr/share/openjk/resources", ["resources/openjk.glade"]),
                     ("/usr/share/applications", ["resources/openjk.desktop"]) ] 
 
 setup(name = "OpenJk Launcher",
-      version = "0.1",
+      version = "0.2",
       description = "OpenJk Launcher",
       author = "Alessandro Toia", 
       author_email = "gort818@gmail.com",
