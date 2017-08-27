@@ -63,15 +63,18 @@ If you are using Steam follow this instructions:
   
 <b>Installation Instructions:</b>
 
-    Distro Independent:
+   Distro Independent:
 
-    Download the source, extract and run sudo python setup.py install
-
-    Deb file for Debian based systems
-
-    Grab the .deb file from the releases page.
-   https://github.com/gort818/openjklauncher/releases
-
+        Download the source, extract and run sudo python setup.py install
+        
+   Deb file for Debian based systems:
+    
+         Grab the .deb file from the releases page.
+         https://github.com/gort818/openjklauncher/releases
+         
+   Arch users:
+   
+         openjk-launcher is now available in the AUR!
 
 
 
