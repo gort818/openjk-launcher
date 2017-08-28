@@ -30,7 +30,7 @@ If you are using Steam follow these instructions:
 
     1. Download and Install SteamCMD SteamCMD
     2. Set the download path using steamCMD, force_install_dir
-    3. Using SteamCMD Set the platform to windows to download any windows game on steam .@sSteamCmdForcePlatformType "windows"
+    3. Using SteamCMD Set the platform to windows to download any windows game on steam. @sSteamCmdForcePlatformType "windows"
     4. Using SteamCMD download the game, app_update 6020
     5. Check for updates
   
