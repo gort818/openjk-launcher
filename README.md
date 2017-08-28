@@ -70,7 +70,9 @@ If you are using Steam follow this instructions:
    Deb file for Debian based systems:
     
          Grab the .deb file from the releases page.
-         https://github.com/gort818/openjklauncher/releases
+         
+         
+https://github.com/gort818/openjklauncher/releases
          
    Arch users:
    
